@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Credentials, Token, TokenService, User, UserService} from "../../angular-module";
 import {Router} from "@angular/router";
-import { HttpClient } from "@angular/common/http";
-import {environment} from "../../environments/environment";
 import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Component({
@@ -16,17 +14,9 @@ export class ConnectionComponent implements OnInit {
   userFormGroup!: FormGroup;
   creditential: Credentials = {};
   myToken: string = '';
-  myUser!: User;
-
-  /*public form = this.fb.group({
-    // new FormControl('');
-    email: [''],
-    password: [''],
-  });*/
-
 
   constructor(
-    private router: Router, private tokenService: TokenService, private userService: UserService, private httpClient: HttpClient, private fb: FormBuilder,public jwtHelper: JwtHelperService
+    private router: Router, private tokenService: TokenService, private userService: UserService, public jwtHelper: JwtHelperService
   ) { }
 
   ngOnInit(): void {
@@ -63,33 +53,12 @@ export class ConnectionComponent implements OnInit {
       this.myToken = myData.token;
       console.log(this.myToken);
       localStorage.setItem('access_token', this.myToken)
-      this.userService.getUserItem('1').subscribe((myData: User) => {
-        this.myUser = myData;
-        console.log(this.myUser);
-      })
     });
 
     console.log(this.jwtHelper.getTokenExpirationDate());
 
 
-    //this.router.navigate(['/test']);
+    this.router.navigate(['/test']);
 
-    /*this.httpClient.post<{token: string}>(
-      'https://127.0.0.1:8000/api/login_check',
-      this.form.value
-    ).subscribe((data: {token: string}) => {
-      localStorage.setItem('access_token', data.token);
-
-      this.router.navigate(['']);
-    }, () => {
-      // Here fail login.
-      this.form.enable();
-      alert('Error login');
-    });
-
-  }
-
-  public get isLogged(): boolean {
-    return localStorage.getItem('access_token') !== null;*/
   }
 }
